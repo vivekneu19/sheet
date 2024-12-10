@@ -10,6 +10,15 @@ app.use(bodyParser.json());
 // Middleware to allow CORS for your frontend
 app.use(cors());
 
+// Root POST route (/) to handle incoming data
+app.post('/', (req, res) => {
+    // Log incoming request for debugging
+    console.log('Received POST request at root:', req.body);
+
+    // Send a simple success response to the client
+    res.status(200).json({ success: true, message: 'Request received successfully!' });
+});
+
 // Proxy route to call Google Apps Script
 app.post('/proxy-to-google-sheet', async (req, res) => {
     try {
@@ -17,7 +26,7 @@ app.post('/proxy-to-google-sheet', async (req, res) => {
         const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzgzsJUD7Di5S5vNMTAjgdWzuRp4IzKIQOCfo4N1H0PvxNacammvCfbNKjEL8RvdKzF/exec';
 
         // Log incoming request for debugging
-        console.log('Incoming request data:', req.body);
+        console.log('Incoming request data to Google Apps Script:', req.body);
 
         // Send the data to Google Apps Script
         const response = await axios.post(GOOGLE_APPS_SCRIPT_URL, req.body, {
